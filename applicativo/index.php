@@ -159,8 +159,10 @@
 							icon: 'img/meuloc2_red.png',
 							title: 'Meu Local'
 						});
-						setInterval(function(){ 
+						setInterval(function(){
+							mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
 							markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+							console.log(mylocal);
 						}, 1000);
 					}, 
 						function(error){ // callback de erro
