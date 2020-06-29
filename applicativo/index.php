@@ -4,13 +4,11 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmgQyyn79lnPCE93YHqplwWybPn0ZCiRQ&callback=initMap&libraries=&v=weekly" defer></script>
         <title>App View</title>
-
         <style type="text/css">
             html,body{
                 width: 100%;
@@ -34,7 +32,7 @@
                 height: 58px;
                 position: absolute;
                 bottom: 0;
-                color: #616466;
+                color: #3c3f41;
                 padding: 10px 5px 10px 5px;
                 background-color: #212529;
             }
@@ -49,31 +47,143 @@
                 font-weight: normal;
                 font-size: 1.5em;
                 text-decoration: none;
-                color: #616466;
+                color: #3c3f41;
             }
             #selected {
                 color: #848586;
             }
+			
+			
+			
+			.gm-svpc {
+				display: none;
+			}
+			.gmnoprint {
+				display: none;
+			}
+			.gm-control-active{
+				display: none;
+			}
         </style>
         <script type="text/javascript">
-            (function (exports) {
-                "use strict";
-
-                function initMap() {
-                    exports.map = new google.maps.Map(document.getElementById("map"), {
+			var map;
+            function initMap() {
+                    map = new google.maps.Map(document.getElementById("map"), {
                         center: {
-                            lat: -3.7866488,
-                            lng: -38.497493
+                            lat: 0,
+                            lng: 0
                         },
-                        zoom: 15
+                        zoom: 16,
+						styles:[
+							{
+								"featureType": "administrative",
+								"elementType": "geometry",
+								"stylers": [
+									{
+										"visibility": "off"
+									}
+								]
+							},
+							{
+								"featureType": "poi",
+								"stylers": [
+									{
+										"visibility": "off"
+									}
+								]
+							},
+							{
+								"featureType": "road",
+								"elementType": "labels.icon",
+								"stylers": [
+									{
+										"visibility": "off"
+									}
+								]
+							},
+							{
+								"featureType": "transit",
+								"stylers": [
+									{
+										"visibility": "off"
+									}
+								]
+							}
+						]
                     });
-                }
+					
+					
+					var icons = {
+						meuloc: {
+							icon: 'img/meuloc2_red.png'
+						},
+						rest: {
+							icon: 'img/icone.png'
+						}
+					};
+					
+					var features = [
+						{
+							position: new google.maps.LatLng(-3.7874523, -38.4969083),
+							type: 'rest',
+							title: 'Restaurante 1'
+						}, {
+							position: new google.maps.LatLng(-3.7870127, -38.4975527),
+							type: 'rest',
+							title: 'Restaurante 2'
+						}
+					];
+					
+					// Create markers.
+					for (var i = 0; i < features.length; i++) {
+						var marker = new google.maps.Marker({
+							position: features[i].position,
+							icon: icons[features[i].type].icon,
+							title: features[i].title,
+							map: map
+						});
+					};
 
-                exports.initMap = initMap;
-            })((this.window = this.window || {}));
+                }
+			
+			function MakerLocal(){
+				if(navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position){
+						// ajusta a posição do marker para a localização do usuário
+						/*marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));*/
+						var mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
+						map.setCenter(mylocal);
+						var markerlc = new google.maps.Marker({
+							position: mylocal,
+							map: map,
+							icon: 'img/meuloc2_red.png',
+							title: 'Meu Local'
+						});
+						setInterval(function(){ 
+							markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+						}, 1000);
+					}, 
+						function(error){ // callback de erro
+						alert('Erro ao obter localização!');
+						console.log('Erro ao obter localização.', error);
+					});
+				} else {
+					console.log('Navegador não suporta Geolocalização!');
+				}
+				/*var mylocal = {lat: -3.7866488, lng: -38.497493};
+				var markerlc = new google.maps.Marker({
+					position: mylocal,
+					map: map,
+					icon: 'img/meuloc2_red.png',
+					title: 'Meu Local'
+				});
+				setInterval(function(){ 
+					markerlc.setPosition(mylocal);
+				}, 1000);*/
+			}
         </script>
     </head>
-    <body>
+    <body onload='MakerLocal();'>
         <nav id="menu-head" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">iMenu</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,11 +206,9 @@
                 </ul>
             </div>
         </nav>
-
         <main class="corpo-principal">
             <div style="width: 100%;height: 100%;" id="map"></div>
         </main>
-
         <footer class="menu-rodape">
             <table>
                 <tr>
@@ -110,7 +218,6 @@
                 </tr>
             </table>
         </footer>
-
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
