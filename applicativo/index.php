@@ -153,10 +153,18 @@
 						/*marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));*/
 						var mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
 						map.setCenter(mylocal);
+						var image = {
+							url: 'img/meuloc2_red.png',
+							scaledSize: new google.maps.Size(20, 20),
+							size: new google.maps.Size(20, 20),
+							origin: new google.maps.Point(0, 0),
+							anchor: new google.maps.Point(0, 0)
+						};
 						var markerlc = new google.maps.Marker({
 							position: mylocal,
 							map: map,
-							icon: 'img/meuloc2_red.png',
+							/*icon: 'img/meuloc2_red.png',*/
+							icon: image,
 							title: 'Meu Local'
 						});
 						setInterval(function(){
