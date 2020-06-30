@@ -182,11 +182,11 @@
 						});
 						
 						setInterval(function(){
-							/*navigator.geolocation.getCurrentPosition(function(position){*/
+							navigator.geolocation.getCurrentPosition(function(position){
 								mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
 								markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 								console.log(mylocal);
-							/*});*/			
+							});		
 						}, 1000);
 						console.log(mylocal);
 					}, 
