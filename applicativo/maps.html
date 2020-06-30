@@ -79,7 +79,7 @@
         <script type="text/javascript">
 			var map;
 			var mylocal;
-			
+						
             function initMap() {
                     map = new google.maps.Map(document.getElementById("map"), {
                         center: {
@@ -180,11 +180,15 @@
 							icon: image,
 							title: 'Meu Local'
 						});
+						
 						setInterval(function(){
-							mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
-							markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-							console.log(mylocal);
+							navigator.geolocation.getCurrentPosition(function(position){
+								mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
+								markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+								console.log(mylocal);
+							});			
 						}, 1000);
+						console.log(mylocal);
 					}, 
 						function(error){ // callback de erro
 						/*alert('Erro ao obter localização!');*/
