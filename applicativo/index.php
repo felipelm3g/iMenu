@@ -25,6 +25,7 @@
                 bottom: 58px;
                 width: 100%;
                 overflow: auto;
+				z-index: 0;
             }
             .menu-rodape {
                 float: left;
@@ -52,6 +53,16 @@
             #selected {
                 color: #848586;
             }
+			#btnlc {
+				float: left;
+				position: absolute;
+				top: 10px;
+				right: 15px;
+				text-align: center;
+				z-index: 1;
+				color: #6c757d;
+				box-shadow: 1px 1px 4px #888888;
+			}
 			
 			
 			
@@ -67,6 +78,8 @@
         </style>
         <script type="text/javascript">
 			var map;
+			var mylocal;
+						
             function initMap() {
                     map = new google.maps.Map(document.getElementById("map"), {
                         center: {
@@ -151,7 +164,7 @@
 					navigator.geolocation.getCurrentPosition(function(position){
 						// ajusta a posição do marker para a localização do usuário
 						/*marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));*/
-						var mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
+						mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
 						map.setCenter(mylocal);
 						var image = {
 							url: 'img/meuloc2_red.png',
@@ -167,14 +180,18 @@
 							icon: image,
 							title: 'Meu Local'
 						});
+						
 						setInterval(function(){
-							mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
-							markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-							console.log(mylocal);
+							/*navigator.geolocation.getCurrentPosition(function(position){*/
+								mylocal = {lat: position.coords.latitude, lng: position.coords.longitude};
+								markerlc.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+								console.log(mylocal);
+							/*});*/			
 						}, 1000);
+						console.log(mylocal);
 					}, 
 						function(error){ // callback de erro
-						alert('Erro ao obter localização!');
+						/*alert('Erro ao obter localização!');*/
 						console.log('Erro ao obter localização.', error);
 					});
 				} else {
@@ -190,6 +207,11 @@
 				setInterval(function(){ 
 					markerlc.setPosition(mylocal);
 				}, 1000);*/
+			}
+			
+			function centralizarmapa(){
+				map.setCenter(mylocal);
+				map.setZoom(16);
 			}
         </script>
     </head>
@@ -217,6 +239,8 @@
             </div>
         </nav>
         <main class="corpo-principal">
+			<!--  <button id='btnlc' onclick='centralizarmapa();' type="button" class="btn btn-light btn-sm"><i class="fas fa-map-pin"></i></button>-->
+			<button id='btnlc' onclick='centralizarmapa();' type="button" class="btn btn-light"><i class="fas fa-location-arrow"></i></button>
             <div style="width: 100%;height: 100%;" id="map"></div>
         </main>
         <footer class="menu-rodape">
